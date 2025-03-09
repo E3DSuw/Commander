@@ -1,7 +1,11 @@
 let tasks = {};
+let islands = {};
 let currentBucket = null;
+let currentIsland = null;
 const taskListElement = document.getElementById('task-list');
 const currentBucketDisplayElement = document.getElementById('current-bucket-display');
+const newTaskInput = document.getElementById('new-task-input');
+const newBucketInput = document.getElementById('new-bucket-input');
 
 async function loadTasks() {
   try {
@@ -11,30 +15,52 @@ async function loadTasks() {
     }
     const text = await response.text();
     tasks = {};
+    islands = {};
     currentBucket = null;
+    currentIsland = null;
 
-    if (text.trim() === "") {
+    if (!text.trim()) {
       renderTasks();
       updateCurrentBucketDisplay();
       return;
     }
 
-    text.split('\n').forEach(line => {
-      line = line.trim();
-      if (line.endsWith('>')) {
-        currentBucket = line.slice(0, -1).trim();
+    const lines = text.split('\n');
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+      if (trimmedLine.endsWith('>')) {
+        currentBucket = trimmedLine.slice(0, -1).trim();
         tasks[currentBucket] = {};
-      } else if (line.endsWith('<')) {
+        currentIsland = null;
+      } else if (trimmedLine.endsWith('<')) {
         currentBucket = null;
+      } else if (trimmedLine.endsWith('}')) {
+        const islandName = trimmedLine.slice(0, -1).trim();
+        islands[islandName] = {};
+        currentIsland = islandName;
+      } else if (trimmedLine.endsWith('{')) {
+        currentIsland = null;
       } else if (currentBucket) {
-        line.split(';').forEach(task => {
-          task = task.trim();
-          if (task) {
-            tasks[currentBucket][task] = {};
+        const lineTasks = trimmedLine.split(';');
+        for (const task of lineTasks) {
+          const trimmedTask = task.trim();
+          if (trimmedTask) {
+            tasks[currentBucket][trimmedTask] = {};
           }
-        });
+        }
+      } else if (currentIsland) {
+        const lineTasks = trimmedLine.split(';');
+        for (const task of lineTasks) {
+          const trimmedTask = task.trim();
+          if (trimmedTask) {
+            if (!islands[currentIsland]) {
+              islands[currentIsland] = {};
+            }
+            islands[currentIsland][trimmedTask] = {};
+          }
+        }
       }
-    });
+    }
     renderTasks();
     updateCurrentBucketDisplay();
   } catch (error) {
@@ -47,13 +73,14 @@ function saveTasks() {
   let text = '';
   for (const bucket in tasks) {
     text += bucket + ' >\n';
-    let taskList = [];
-    for (const task in tasks[bucket]) {
-      taskList.push(task);
-    }
-    text += taskList.join('; ');
-    text += '\n<\n';
+    text += Object.keys(tasks[bucket]).join('; ') + '\n<\n';
   }
+
+  for (const island in islands) {
+    text += island + ' }\n';
+    text += Object.keys(islands[island]).join('; ') + '\n{\n';
+  }
+
   const blob = new Blob([text], { type: 'text/plain' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -66,7 +93,7 @@ function saveTasks() {
 }
 
 function renderTasks() {
-  const fragment = document.createDocumentFragment(); // Use a document fragment
+  const fragment = document.createDocumentFragment();
   for (const bucket in tasks) {
     const bucketLi = document.createElement('li');
     bucketLi.textContent = bucket + ':';
@@ -82,10 +109,25 @@ function renderTasks() {
       subUl.appendChild(taskLi);
     }
     bucketLi.appendChild(subUl);
-    fragment.appendChild(bucketLi); // Append to fragment
+    fragment.appendChild(bucketLi);
   }
-  taskListElement.innerHTML = ''; // Clear once
-  taskListElement.appendChild(fragment); // Append fragment once
+
+  for (const island in islands) {
+    const islandLi = document.createElement('li');
+    islandLi.textContent = island + ' (Island):';
+    islandLi.classList.add('island');
+    const subUl = document.createElement('ul');
+    for (const task in islands[island]) {
+      const taskLi = document.createElement('li');
+      taskLi.textContent = task;
+      subUl.appendChild(taskLi);
+    }
+    islandLi.appendChild(subUl);
+    fragment.appendChild(islandLi);
+  }
+
+  taskListElement.innerHTML = '';
+  taskListElement.appendChild(fragment);
 }
 
 function updateCurrentBucketDisplay() {
@@ -93,27 +135,17 @@ function updateCurrentBucketDisplay() {
 }
 
 document.getElementById('add-task-button').addEventListener('click', () => {
-  const taskName = document.getElementById('new-task-input').value.trim();
+  const taskName = newTaskInput.value.trim();
   if (taskName && currentBucket) {
     tasks[currentBucket][taskName] = {};
     renderTasks();
-    document.getElementById('new-task-input').value = '';
+    newTaskInput.value = '';
   } else if (!currentBucket) {
     alert('Please select a bucket before adding a task.');
   }
 });
 
 document.getElementById('add-bucket-button').addEventListener('click', () => {
-  const bucketName = document.getElementById('new-bucket-input').value.trim();
+  const bucketName = newBucketInput.value.trim();
   if (bucketName) {
-    tasks[bucketName] = {};
-    currentBucket = bucketName;
-    renderTasks();
-    updateCurrentBucketDisplay();
-    document.getElementById('new-bucket-input').value = '';
-  }
-});
-
-document.getElementById('save-button').addEventListener('click', saveTasks);
-
-loadTasks();
+    tasks[bucketName]
