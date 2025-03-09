@@ -73,15 +73,11 @@ async function loadTasks() {
 function saveTasks() {
   let text = '';
   for (const bucket in tasks) {
-    text += bucket + ' >\n';
-    text += Object.keys(tasks[bucket]).join('; ') + '\n<\n';
+    text += `<span class="math-inline">\{bucket\} \>\\n</span>{Object.keys(tasks[bucket]).join('; ')}\n<\n`;
   }
-
   for (const island in islands) {
-    text += island + ' }\n';
-    text += Object.keys(islands[island]).join('; ') + '\n{\n';
+    text += `<span class="math-inline">\{island\} \}\\n</span>{Object.keys(islands[island]).join('; ')}\n{\n`;
   }
-
   const blob = new Blob([text], { type: 'text/plain' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -107,12 +103,10 @@ function renderTasks() {
     for (const task in tasks[bucket]) {
       const taskLi = document.createElement('li');
       taskLi.textContent = task;
-      const deleteButton = createDeleteButton(tasks[bucket], task, bucket);
-      taskLi.appendChild(deleteButton);
+      taskLi.appendChild(createDeleteButton(tasks[bucket], task, bucket));
       subUl.appendChild(taskLi);
     }
-    const deleteBucketButton = createDeleteButton(tasks, bucket);
-    bucketLi.appendChild(deleteBucketButton);
+    bucketLi.appendChild(createDeleteButton(tasks, bucket));
     bucketLi.appendChild(subUl);
     fragment.appendChild(bucketLi);
   }
@@ -125,6 +119,13 @@ function renderTasks() {
     for (const task in islands[island]) {
       const taskLi = document.createElement('li');
       taskLi.textContent = task;
-      const deleteButton = createDeleteButton(islands[island], task, island);
-      taskLi.appendChild(deleteButton);
-      subUl.appendChild(taskLi
+      taskLi.appendChild(createDeleteButton(islands[island], task, island));
+      subUl.appendChild(taskLi);
+    }
+    islandLi.appendChild(createDeleteButton(islands, island));
+    islandLi.appendChild(subUl);
+    fragment.appendChild(islandLi);
+  }
+
+  taskListElement.innerHTML = '';
+  taskList
