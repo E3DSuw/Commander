@@ -1,44 +1,29 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2487.7">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Battleship Planner</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Battleship Planner&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;link rel="stylesheet" href="style.css"&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="game-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="battleship"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="islands"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="water"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;aside id="task-sidebar"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;Tasks&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="task-list"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="task-controls"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;input type="text" id="new-task-input" placeholder="Task Name"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="add-task-button"&gt;Add Task&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;input type="text" id="new-bucket-input" placeholder="Bucket Name"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="add-bucket-button"&gt;Add Bucket&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="save-button"&gt;Save&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="current-bucket-display"&gt;Current Bucket: None&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/aside&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="script.js"&gt;&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <div id="game-container">
+    <div id="battleship"></div>
+    <div id="islands"></div>
+    <div id="water"></div>
+  </div>
+  <aside id="task-sidebar">
+    <h2>Tasks</h2>
+    <div id="task-list"></div>
+    <div id="task-controls">
+      <input type="text" id="new-task-input" placeholder="Task Name">
+      <button id="add-task-button">Add Task</button>
+      <input type="text" id="new-bucket-input" placeholder="Bucket Name">
+      <button id="add-bucket-button">Add Bucket</button>
+      <button id="save-button">Save</button>
+      <div id="current-bucket-display">Current Bucket: None</div>
+    </div>
+  </aside>
+  <script src="script.js"></script>
 </body>
 </html>
