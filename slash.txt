@@ -1,3 +1,8 @@
-Final Project > Write Intro <
+Final Project > Write Intro; Finish Outline <
 Shopping > Buy fruits; Baking Soda <
-Cyprus } Row south; Locate strategic points; Fire at enemies
+Cyprus }
+Row south; Locate strategic points; Fire at enemies
+{
+Sicily }
+Build navy; Scout coast; Establish base
+{
