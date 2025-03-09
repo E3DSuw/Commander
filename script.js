@@ -6,6 +6,7 @@ const taskListElement = document.getElementById('task-list');
 const currentBucketDisplayElement = document.getElementById('current-bucket-display');
 const newTaskInput = document.getElementById('new-task-input');
 const newBucketInput = document.getElementById('new-bucket-input');
+const newIslandInput = document.getElementById('new-island-input');
 
 async function loadTasks() {
   try {
@@ -106,8 +107,12 @@ function renderTasks() {
     for (const task in tasks[bucket]) {
       const taskLi = document.createElement('li');
       taskLi.textContent = task;
+      const deleteButton = createDeleteButton(tasks[bucket], task, bucket);
+      taskLi.appendChild(deleteButton);
       subUl.appendChild(taskLi);
     }
+    const deleteBucketButton = createDeleteButton(tasks, bucket);
+    bucketLi.appendChild(deleteBucketButton);
     bucketLi.appendChild(subUl);
     fragment.appendChild(bucketLi);
   }
@@ -120,32 +125,6 @@ function renderTasks() {
     for (const task in islands[island]) {
       const taskLi = document.createElement('li');
       taskLi.textContent = task;
-      subUl.appendChild(taskLi);
-    }
-    islandLi.appendChild(subUl);
-    fragment.appendChild(islandLi);
-  }
-
-  taskListElement.innerHTML = '';
-  taskListElement.appendChild(fragment);
-}
-
-function updateCurrentBucketDisplay() {
-  currentBucketDisplayElement.textContent = `Current Bucket: ${currentBucket || 'None'}`;
-}
-
-document.getElementById('add-task-button').addEventListener('click', () => {
-  const taskName = newTaskInput.value.trim();
-  if (taskName && currentBucket) {
-    tasks[currentBucket][taskName] = {};
-    renderTasks();
-    newTaskInput.value = '';
-  } else if (!currentBucket) {
-    alert('Please select a bucket before adding a task.');
-  }
-});
-
-document.getElementById('add-bucket-button').addEventListener('click', () => {
-  const bucketName = newBucketInput.value.trim();
-  if (bucketName) {
-    tasks[bucketName]
+      const deleteButton = createDeleteButton(islands[island], task, island);
+      taskLi.appendChild(deleteButton);
+      subUl.appendChild(taskLi
